@@ -1,0 +1,12 @@
+{
+  "name": "mysampleapp",
+  "version": "1.0.0",
+  "description": "Test App for NCI WAD",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/Galiant/NodeJS_WAD_NCI.git",
+  "author": "Antonijo Galic",
+  "license": "ISC"
+}
