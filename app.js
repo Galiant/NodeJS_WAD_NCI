@@ -12,7 +12,7 @@ app.use(express.static("images"));  // allow the application to access the image
 app.get('/', function(req, res){
   // res.send("Hello cruel world!"); // This is commented out to allow the index view
   res.render('index.jade', {root: VIEWS});
-  console.log("Now you are home!");
+  console.log("Now you are at home page!");
 });
 
 // function to render the products page
