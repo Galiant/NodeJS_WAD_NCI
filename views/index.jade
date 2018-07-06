@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    title My Simple App
+    link(rel='stylesheet', href='app.css', type='text/css')
+  body
+    .header
+      .imhold
+        img#theLogo.logoIm(src='/logo.png', alt='logo')
+      .navhold
+        .topnav
+          a(href='/') Home
+          a(href='/products') Products
+          a(href='#') Add New product
+    .row
+      .holder
+        .large
+          h1 Running
+          h2 Accessories
+        .normal
+          h1 Swimming
+          h2 Accessories
+        .normal2
+          h1 Cycling
+          h2 Accessories
+    .footer
+      p
+        | Liam Made This Node JS Application!

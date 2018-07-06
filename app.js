@@ -1,16 +1,27 @@
 var express = require("express"); // call express to be used by the application
 var app = express();
-
 const path = require('path');
 const VIEWS = path.join(__dirname, 'views');
 
+app.use(express.static("scripts")); // allow the application to access the scripts folder contents to use in the application
+app.use(express.static("images"));  // allow the application to access the images folder contents to use in the application
+
 // function to set up a simple hello response
 
+// function to render the home page
 app.get('/', function(req, res){
   // res.send("Hello cruel world!"); // This is commented out to allow the index view
-  res.sendFile('index.html', {root: VIEWS});
+  res.render('index.jade', {root: VIEWS});
   console.log("Now you are home!");
 });
+
+// function to render the products page
+app.get('/products', function(req, res){
+  // res.send("Hello cruel world!"); // This is commented out to allow the index view
+  res.render('products.jade', {root: VIEWS}); // use the render command so that response object renders a HTML page
+  console.log("Now you are on products page!");
+});
+
 
 
 // We need to set the requirements for tech application to run

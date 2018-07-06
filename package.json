@@ -8,5 +8,9 @@
   },
   "repository": "https://github.com/Galiant/NodeJS_WAD_NCI.git",
   "author": "Antonijo Galic",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "jade": "^1.11.0"
+  }
 }
