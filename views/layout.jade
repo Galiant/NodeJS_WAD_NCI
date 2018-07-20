@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    title My Simple App
+    link(rel='stylesheet', href='../app.css', type='text/css')
+  body
+    .header
+      .imhold
+        img#theLogo.logoIm(src='/logo.png', alt='logo')
+      .navhold
+        .topnav
+          a(href='/') Home
+          a(href='/products') Products
+          a(href='#') New product
+    block content
+  .footer
+      p
+        | This is My First Node JS Application! Copyright Liam McCabe 2018!
