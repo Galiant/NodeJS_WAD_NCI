@@ -2,7 +2,7 @@ extends layout
 block content
     .row
       .holder
-        h1 Hi I am product page!
+        h1 Hi I am the product page!
         .grid-container
           each row in res1
             .item
@@ -11,4 +11,5 @@ block content
               p.itemp &euro;#{row.Price}
               p.itemp Activity: #{row.Activity}
               a.button(href="/item/#{row.Id}") Show
-          
+              a.button(href="/edit/#{row.Id}") Edit
+              a.button(href="/delete/#{row.Id}") Delete

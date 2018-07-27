@@ -1,0 +1,12 @@
+extends layout
+block content
+    .row
+      .holder
+        h1 Hi I am the reviews page!
+          .grid-container
+            each review in reviews
+              .item
+                h1.itemtitle #{review.name}
+                
+                // missing line of code on line 10
+                

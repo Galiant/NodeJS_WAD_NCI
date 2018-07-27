@@ -2,12 +2,19 @@ var express = require("express"); // call express to be used by the application
 var app = express();
 const path = require('path');
 const VIEWS = path.join(__dirname, 'views');
+var fs = require('fs');
 
 var mysql = require('mysql'); // allow access to SQL
+
+var bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('view engine', 'jade');     // allow the application to use jade templating system
 app.use(express.static("scripts")); // allow the application to access the scripts folder contents to use in the application
 app.use(express.static("images"));  // allow the application to access the images folder contents to use in the application
+app.use(express.static("models"));  // allow the application to access the models folder contents to use in the application
+
+var reviews = require("./models/reviews.json"); // allow the app to access the reviews.json file
 
 // function to set up a simple hello response
 
@@ -72,8 +79,7 @@ app.get('/products', function(req, res){
   // res.send("Hello cruel world!"); // This is commented out to allow the index view
   let sql = 'SELECT * FROM products;';
   let query = db.query(sql, (err, res1) => {
-    if(err)
-      throw(err);
+    if(err) throw(err);
     
   res.render('products', {root: VIEWS, res1}); // use the render command so that response object renders a HTML page
       });
@@ -83,7 +89,7 @@ app.get('/products', function(req, res){
 // function to render the item page
 app.get('/item/:id', function(req, res){
   // res.send("Hello cruel world!"); // This is commented out to allow the index view
-  let sql = 'SELECT * FROM products WHERE Id = "'+req.params.id+'";';
+  let sql = 'SELECT * FROM products WHERE Id = '+req.params.id+';';
   let query = db.query(sql, (err, res1) => {
     if(err)
       throw(err);
@@ -93,7 +99,87 @@ app.get('/item/:id', function(req, res){
   console.log("Now you are on item page!");
 });
 
+// function to render the create page
+app.get('/create', function(req, res){
+    
+  res.render('create', {root: VIEWS});
+  console.log("Now you are ready to create!");
+});
 
+// function to add data to database based on button press
+app.post('/create', function(req, res){
+ var name = req.body.name
+ let sql = 'INSERT INTO products (Name, Price, Image, Activity) VALUES ("'+name+'", '+req.body.price+', "'+req.body.image+'", "'+req.body.activity+'");';
+  let query = db.query(sql, (err, res) => {
+    if(err) throw err;
+    console.log(res);
+    console.log("The name of product is " + name);
+});
+ res.render('index', {root: VIEWS});
+});
+
+// function to edit data added to database based on button press and form
+app.get('/edit/:id', function(req, res){
+  // res.send("Hello cruel world!"); // This is commented out to allow the index view
+  let sql = 'SELECT * FROM products WHERE Id = '+req.params.id+';';
+  let query = db.query(sql, (err, res1) => {
+    if(err)
+      throw(err);
+    
+  res.render('edit', {root: VIEWS, res1}); // use the render command so that response object renders a HTML page
+      });
+  console.log("Now you are on the edit product page!");
+});
+
+app.post('/edit/:id', function(req, res) {
+  let sql = 'UPDATE products SET Name = "'+req.body.newname+'", Price = "'+req.body.newprice+'", Image = "'+req.body.newimage+'", Activity = "'+req.body.newactivity+'" WHERE Id = '+req.params.id+';'
+  let query = db.query(sql, (err, res) => {
+    if(err) throw err;
+    console.log(res);
+  })
+  res.redirect("/item/" + req.params.id);
+});
+
+// function to delete data added to database based on button press and form
+app.get('/delete/:id', function(req, res){
+  // res.send("Hello cruel world!"); // This is commented out to allow the index view
+  let sql = 'DELETE FROM products WHERE Id = '+req.params.id+';';
+  let query = db.query(sql, (err, res1) => {
+    if(err)
+      throw(err);
+    
+  res.redirect('/products'); // use the render command so that response object renders a HTML page
+      });
+  console.log("Now you are delete product!");
+});
+
+// From here on is JSON data manipulation
+app.get('/reviews', function(req, res) {
+  res.render('reviews', {reviews:reviews}
+  );
+  console.log("Reviews on Show");
+});
+
+// route to render add JSON page
+app.get('/add', function(req, res){
+  // res.send("Hello cruel world!"); // This is commented out to allow the index view
+  res.render('add', {root: VIEWS});
+  console.log("Now you are at leaving feedback!");
+});
+
+//post request to add JSON review
+app.post('/add', function(req, res) {
+  var count = Object.keys(reviews).length;
+  console.log(count);
+  
+  function getMax(reviews, id) {
+    var max
+    for (var i=0; i<reviews.length; i++) {
+      if (!max || parseInt(reviews[i][id]) > parseInt(max[id]))
+        max = reviews[id]
+    }
+  }
+});
 
 // We need to set the requirements for tech application to run
 app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function() {
