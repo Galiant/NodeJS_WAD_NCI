@@ -1,0 +1,13 @@
+extends layout
+block content
+  .row
+  h1 Welcome lets edit a review
+  .formHold
+    form(method="post")
+      each review in indOne
+        fieldset
+          label(for="name") Product Name:
+          input(name="name", type="text", value="#{review.name}")
+          label(for="content") Product Activity:
+          input(name="content", type="text", value="#{review.content}")
+          button.button(type="submit") Edit this review
